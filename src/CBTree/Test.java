@@ -16,11 +16,17 @@ public class Test {
      */
     public static void main(String[] args) {
         CBTree tree = new CBTree();
-        tree.insert(5, 7);
-        tree.insert(3, 2);
-        tree.insert(6, 2);
+        tree.insert(6, 8);
+        tree.insert(1, 10);
+        tree.insert( 5, 12);
+        tree.insert(4, 1);
+        tree.insert( 9, 10);
+        tree.insert(15, 12);
+        tree.insert(9, 9);
 
-        System.out.println(CBTree.inOrderTraversal(tree.root));
+        System.out.println(tree.toString());
+        
+        System.out.println(tree.search(4, 6, 10, 13));
     }
 
 }
