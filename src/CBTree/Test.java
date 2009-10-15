@@ -19,6 +19,7 @@ public class Test {
         tree.insert(6, 8);
         tree.insert(1, 10);
         tree.insert( 5, 12);
+        tree.insert( 5, 12);
         tree.insert(4, 1);
         tree.insert( 9, 10);
         tree.insert(15, 12);

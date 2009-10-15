@@ -67,21 +67,29 @@ public class CBTree {
         switch (level % 2) {
             // even levels; we compare by the x value
             case 0:
-                if (node.xdata >= xdata) {
+                if (node.xdata > xdata) {
                     node.lst = insert(xdata, ydata, node.lst, level + 1);
                 }
                 else if (node.xdata < xdata) {
                     node.rst = insert(xdata, ydata, node.rst, level + 1);
                 }
+                else if (node.ydata != ydata) {
+                    node.lst = insert(xdata, ydata, node.lst, level + 1);
+                }
+                else return node;
                 break;
             // odd levels; we compare by the y value
             case 1:
-                if (node.ydata >= ydata) {
+                if (node.ydata > ydata) {
                     node.lst = insert(xdata, ydata, node.lst, level + 1);
                 }
                 else if (node.ydata < ydata) {
                     node.rst = insert(xdata, ydata, node.rst, level + 1);
                 }
+                else if (node.xdata != xdata) {
+                    node.lst = insert(xdata, ydata, node.lst, level + 1);
+                }
+                else return node;
                 break;
             default:
                 System.out.println("You found a value " + level + " that is neither odd nor even!");
