@@ -20,7 +20,7 @@ public class Test {
         tree.insert(3, 2);
         tree.insert(6, 2);
 
-        System.out.println(tree.toString());
+        System.out.println(CBTree.inOrderTraversal(tree.root));
     }
 
 }

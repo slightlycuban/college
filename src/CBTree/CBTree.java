@@ -11,7 +11,7 @@ package CBTree;
  */
 public class CBTree {
 
-    private CBNode root;
+    CBNode root;
 
     public CBTree() {
         root = null;
@@ -34,7 +34,7 @@ public class CBTree {
     }
 
     public void insert(int xdata, int ydata) {
-        insert(xdata, ydata, root, 0);
+        this.root = insert(xdata, ydata, root, 0);
     }
 
     private CBNode insert(int xdata, int ydata, CBNode node, int level) {
