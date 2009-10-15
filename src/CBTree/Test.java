@@ -16,7 +16,11 @@ public class Test {
      */
     public static void main(String[] args) {
         CBTree tree = new CBTree();
-        tree.insert(xdata, ydata);
+        tree.insert(5, 7);
+        tree.insert(3, 2);
+        tree.insert(6, 2);
+
+        System.out.println(tree.toString());
     }
 
 }
