@@ -2,7 +2,11 @@ package CBTree;
 
 /**
  * <code>CBTree</code> implements a binary search tree using
- * <code>CBNode</code> as nodes in the tree.
+ * <code>CBNode</code> as nodes in the tree. Since the nodes hole two
+ * data values, even levels (including zero) compare only the first data
+ * value, and odd levels compare only the second.
+ * <p>
+ * Duplicates are not allowed.
  *
  * @author Michael Tracy
  */
@@ -62,6 +66,21 @@ public class CBTree {
         this.root = CBTree.insert(xdata, ydata, root, 0);
     }
 
+    /**
+     * Recursively traverse the tree to find the proper place to insert
+     * a new node. Each call must return the reference to the new tree containing
+     * the new node.
+     * <p>
+     * The comparitive property of this two-value tree is maintained by
+     * <code>level</code>, which passes the level of the tree that is currently
+     * being examined by this.
+     * 
+     * @param xdata int of x value to add to the new node
+     * @param ydata int of y value to add to the new node
+     * @param node  CBNode of where we're attempting to insert
+     * @param level int of which level we are currently on
+     * @return  reference to the tree with the new node
+     */
     private static CBNode insert(int xdata, int ydata, CBNode node, int level) {
         if ( node == null ) return new CBNode(xdata, ydata);
         switch (level % 2) {
@@ -110,6 +129,12 @@ public class CBTree {
         return CBTree.toString(root);
     }
 
+    /**
+     * Recursively get the data from each node. Output is presented InOrder
+     * 
+     * @param node  CBNode of the tree to output
+     * @return  String of data within the node/tree
+     */
     private static String toString (CBNode node) {
         if (node == null) return "";
 
@@ -137,10 +162,33 @@ public class CBTree {
         int ymin = Math.min(y1, y2);
         int ymax = Math.max(y1, y2);
 
+        // call the recursive search function on root
         return CBTree.search(xmin, xmax, ymin, ymax, root, 0);
 
     }
 
+    /**
+     * Recursively search through the tree, and return a string of nodes
+     * that fall within a rectangle outlined by two pairs of
+     * Cartesian coordinates.
+     * <p>
+     * This uses the comparitive property of the tree to eliminate certain
+     * subtrees. If a node falls below the currently checked minimum, then
+     * that node's left subtree is excluded from the search. Likewise, if a node
+     * is over the currently checked max, its right subtree is ignored.
+     * <p>
+     * The comparitive property of this two-value tree is checked by
+     * <code>level</code>, which passes the level of the tree that is currently
+     * being examined by this.
+     * 
+     * @param xmin  int of minimum x value for the rectangle
+     * @param xmax  int of maximum x value for the rectangle
+     * @param ymin  int of minimum y value for the rectangle
+     * @param ymax  int of maximum y value for the rectangle
+     * @param node  CBNode of the node/tree to perform the search on
+     * @param level int of the level of the tree the search is currently at
+     * @return      String containing all nodes found thus far that satisfy the condition
+     */
     private static String search (int xmin, int xmax, int ymin, int ymax, CBNode node, int level) {
         if (node == null) return "";
         switch (level % 2) {
