@@ -3,7 +3,9 @@ package teamstats;
 import java.util.TreeSet;
 
 /**
- * This class is designed to keep all the info of a team.
+ * This class is designed to keep all the info of a team. It will hold
+ * the name, number of losses, number of wins, and a set of all the years
+ * the team has played.
  * 
  * @author Michael Tracy
  */
@@ -22,7 +24,7 @@ public class TeamInfo {
      */
     private int wins;
     /**
-     * <code>LinkedList&lt;String&gt;</code> of the years the team has played
+     * <code>TreeSet&lt;String&gt;</code> of the years the team has played
      */
     private TreeSet<String> years;
 
@@ -49,7 +51,7 @@ public class TeamInfo {
 
     /**
      * Add a list of years to the list <code>year</code>.
-     * @param years LinkedList&lt;String&gt; of years to add
+     * @param years <code>TreeSet&lt;String&gt;</code> of years to add
      */
     public void addYears(TreeSet<String> years) {
         this.years.addAll(years);
@@ -86,39 +88,36 @@ public class TeamInfo {
     }
 
     /**
-     * @return the name
+     * @return the name as a <code>String</code>
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @return the losses
+     * @return the losses as an <code>int</code>
      */
     public int getLosses() {
         return losses;
     }
 
     /**
-     * @return the wins
+     * @return the wins as an <code>int</code>
      */
     public int getWins() {
         return wins;
     }
 
     /**
-     * @return the years
+     * @return the years the team has played in a <code>TreeSet</code>
      */
     public TreeSet<String> getYears() {
         return years;
     }
 
     /**
-     * I&rsquo;ve gone over this quite a bit, and I cannot see how sorting
-     * the years when I receive them would be any faster than just sorting
-     * the entire list when I want to call <code>toString()</code>. Plus, this
-     * is much easier than sorting it on <code>addYear</code>. So, before
-     * the years are printed, they are sorted.
+     * Uses <code>StringBuilder</code> to create a formatted string
+     * of all the data currently in the object about the team.
      *
      * @return formatted string of the team name, number of wins,
      * number of losses, and list of years the team played

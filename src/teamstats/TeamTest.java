@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import javax.swing.JFileChooser;
 
 /**
+ * The main driver to test TeamTree and TeamInfo.
  *
  * @author Michael Tracy
  */
@@ -35,6 +35,7 @@ public class TeamTest {
 
                 TeamTree tree = new TeamTree();
 
+                // Read in each line of the file
                 while (fileScan.hasNextLine()) {
                     StringTokenizer line = new StringTokenizer(fileScan.nextLine());
 
@@ -43,10 +44,12 @@ public class TeamTest {
                     line.nextToken();
                     String loser = line.nextToken();
 
+                    // This little block breaks out the year
                     int year = Integer.parseInt(date.substring(6, 8));
                     if (year <= 10) year += 2000;
                     else year += 1900;
 
+                    // Construct the two TeamInfo objects
                     TeamInfo winTeam = new TeamInfo(winner);
                     TeamInfo loseTeam = new TeamInfo(loser);
                     winTeam.addYear(year + "");
@@ -54,12 +57,12 @@ public class TeamTest {
                     winTeam.incrWin();
                     loseTeam.incrLoss();
 
-                    // System.out.println("Winning " + winner + " to the tree!");
+                    // Add the new TeamInfo objects to the tree
                     tree.add(winTeam);
-                    // System.out.println("Losing " + loser + " to the tree.");
                     tree.add(loseTeam);
                 } // end while
 
+                // Setup to output the data
                 Collection<TeamInfo> teams = tree.getTree().values();
                 StringBuilder out = new StringBuilder();
                 for (TeamInfo team : teams) out.append(team.toString());

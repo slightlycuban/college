@@ -4,6 +4,8 @@ import java.util.TreeMap;
 
 /**
  * This implements the interface for the tree that holds the teamstat data.
+ * A <code>TreeMap</code> of key <code>String</code> and value
+ * <code>TeamInfo</code> is used to store the list of team stats.
  * 
  * @author Michael Tracy
  */
