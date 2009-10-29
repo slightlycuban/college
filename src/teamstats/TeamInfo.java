@@ -1,5 +1,6 @@
 package teamstats;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -22,27 +23,7 @@ public class TeamInfo {
     }
 
     public void addYear(String year) {
-        // Check for an empty list
-        if (this.years.isEmpty()) {
-            this.years.add(year);
-            return;
-        }
-        ListIterator<String> it = this.years.listIterator();
-        for (String here = it.next(); here != null; here = it.next()) {
-            // Check if the year is already in the list. If so, throw it out.
-            if (year.equals(here)) {
-                throw new DuplicateElementException("Year " + year + " is already in the list.");
-            }
-            // If the year is less than the current item in the list,
-            // then add that item before the year that is greater.
-            if (year.compareTo(here) < 0) {
-                it.previous();
-                it.add(year);
-                return;
-            }
-        } // end for
-        // If we made it here, then the new year belongs at the end of the list
-        years.addLast(year);
+        years.add(year);
     }
 
     public void addYears(LinkedList<String> years) {
@@ -101,6 +82,7 @@ public class TeamInfo {
     public String toString() {
         StringBuilder out = new StringBuilder("Name: " + this.getName() + " Wins: " + this.getWins() + " Losses: " + this.getLosses() +
                 "\nYears: ");
+        Collections.sort(years);
         ListIterator<String> it = years.listIterator();
         for (String here = it.next(); here != null; here = it.next()) {
             out.append(here + " ");
