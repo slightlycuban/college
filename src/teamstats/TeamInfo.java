@@ -22,16 +22,32 @@ public class TeamInfo {
     }
 
     public void addYear(String year) {
-        if (years.isEmpty()) years.add(year);
-        ListIterator<String> it = years.listIterator();
+        // Check for an empty list
+        if (this.years.isEmpty()) {
+            this.years.add(year);
+            return;
+        }
+        ListIterator<String> it = this.years.listIterator();
         for (String here = it.next(); here != null; here = it.next()) {
+            // Check if the year is already in the list. If so, throw it out.
             if (year.equals(here)) {
                 throw new DuplicateElementException("Year " + year + " is already in the list.");
             }
-            if (year.compareTo(here) < 0) break;
-        }
-        it.previous();
-        it.add(year);
+            // If the year is less than the current item in the list,
+            // then add that item before the year that is greater.
+            if (year.compareTo(here) < 0) {
+                it.previous();
+                it.add(year);
+                return;
+            }
+        } // end for
+        // If we made it here, then the new year belongs at the end of the list
+        years.addLast(year);
+    }
+
+    public void addYears(LinkedList<String> years) {
+        ListIterator<String> it = years.listIterator();
+        for (String here = it.next(); here != null; here = it.next()) this.addYear(here);
     }
 
     public void incrWin() {
@@ -76,6 +92,20 @@ public class TeamInfo {
      */
     public LinkedList<String> getYears() {
         return years;
+    }
+
+    @Override
+    /**
+     *
+     */
+    public String toString() {
+        StringBuilder out = new StringBuilder("Name: " + this.getName() + " Wins: " + this.getWins() + " Losses: " + this.getLosses() +
+                "\nYears: ");
+        ListIterator<String> it = years.listIterator();
+        for (String here = it.next(); here != null; here = it.next()) {
+            out.append(here + " ");
+        }
+        return out.toString();
     }
 
 }
