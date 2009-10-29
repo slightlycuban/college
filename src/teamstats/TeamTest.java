@@ -60,12 +60,9 @@ public class TeamTest {
                     tree.add(loseTeam);
                 } // end while
 
-                Collection teams = tree.getTree().values();
+                Collection<TeamInfo> teams = tree.getTree().values();
                 StringBuilder out = new StringBuilder();
-                Iterator<TeamInfo> it = teams.iterator();
-                while (it.hasNext()) {
-                    out.append(it.next().toString());
-                }
+                for (TeamInfo team : teams) out.append(team.toString());
                 System.out.println(out.toString());
             } //end try
             catch( IOException e) {

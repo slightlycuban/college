@@ -1,8 +1,6 @@
 package teamstats;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.TreeSet;
 
 /**
  * This class is designed to keep all the info of a team.
@@ -26,7 +24,7 @@ public class TeamInfo {
     /**
      * <code>LinkedList&lt;String&gt;</code> of the years the team has played
      */
-    private LinkedList<String> years;
+    private TreeSet<String> years;
 
     /**
      * Default constructor. Creates a <code>TeamInfo</code>
@@ -36,7 +34,7 @@ public class TeamInfo {
     public TeamInfo(String name) {
         this.name = name;
         this.losses = this.wins = 0;
-        this.years = new LinkedList<String>();
+        this.years = new TreeSet<String>();
     }
 
     /**
@@ -53,9 +51,8 @@ public class TeamInfo {
      * Add a list of years to the list <code>year</code>.
      * @param years LinkedList&lt;String&gt; of years to add
      */
-    public void addYears(LinkedList<String> years) {
-        ListIterator<String> it = years.listIterator();
-        while(it.hasNext()) this.addYear(it.next());
+    public void addYears(TreeSet<String> years) {
+        this.years.addAll(years);
     }
 
     /**
@@ -112,7 +109,7 @@ public class TeamInfo {
     /**
      * @return the years
      */
-    public LinkedList<String> getYears() {
+    public TreeSet<String> getYears() {
         return years;
     }
 
@@ -131,9 +128,7 @@ public class TeamInfo {
         StringBuilder out = new StringBuilder("Name: " + this.getName() +
                 " Wins: " + this.getWins() + " Losses: " + this.getLosses() +
                 "\nYears: ");
-        Collections.sort(this.years);
-        ListIterator<String> it = this.years.listIterator();
-        while (it.hasNext()) out.append(it.next() + " ");
+        for (String year : this.years) out.append(year + " ");
         out.append("\n\n");
         return out.toString();
     }
