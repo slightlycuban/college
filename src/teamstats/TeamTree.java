@@ -9,22 +9,40 @@ import java.util.TreeMap;
  */
 public class TeamTree {
 
-    private TreeMap tree;
+    private TreeMap<String,TeamInfo> tree;
 
+    /**
+     *
+     */
     public TeamTree() {
-        this.tree = new TreeMap();
+        this.tree = new TreeMap<String,TeamInfo>();
     }
 
+    /**
+     * This takes a TeamInfo <code>team</code> and adds it to the tree.
+     * If the team does not exist in the tree, a new team will be added.
+     * If the team exists in the tree, then the data for wins, losses, and
+     * years played will be added to the TeamInfo currently in the tree.
+     * @param team
+     */
     public void add(TeamInfo team) {
-        Object newTeam = this.tree.get(team.getName());
+        TeamInfo newTeam = this.tree.get(team.getName());
+        // Team does not exist in tree
         if (newTeam == null) {
             this.tree.put(team.getName(), team);
-        } else {
-            TeamInfo found = (TeamInfo)newTeam;
-            found.addLosses(team.getLosses());
-            found.addWins(team.getWins());
-            found.addYear(team.getYears().getFirst());
         }
+        // Its in there, now we just have to add it properly
+        else {
+            newTeam.addLosses(team.getLosses());
+            newTeam.addWins(team.getWins());
+            newTeam.addYears(team.getYears());
+            this.tree.put(newTeam.getName(), newTeam);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return this.tree.toString();
     }
 
 }
