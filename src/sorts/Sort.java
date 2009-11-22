@@ -5,6 +5,8 @@
 
 package sorts;
 
+import java.util.Random;
+
 /**
  *
  * @author mtrac002
@@ -67,6 +69,39 @@ public final class Sort {
         return temp;
     }
 
-    
+    private static void swap (int[] array, int p1, int p2) {
+        int temp = array[p1];
+        array[p1] = array[p2];
+        array[p2] = temp;
+    }
+
+    private static int partition (int[] array, int left, int right, int pivotPos) {
+        int pivot = array[pivotPos];
+        swap(array, pivotPos, right);
+        int store = left;
+
+        for (int i = left; i < right; i++) {
+            if (array[i] < pivot) {
+                swap(array, store, i);
+                store++;
+            }
+        }
+        swap(array, store, right);
+        return store;
+    }
+
+    private static void quicksort (int[] array, int left, int right) {
+        if (right > left) {
+            // Random randPivot = new Random();
+            int pivotPos = left;
+            int storePos = Sort.partition(array, left, right, pivotPos);
+            Sort.quicksort(array, left, storePos - 1);
+            Sort.quicksort(array, storePos + 1, right);
+        }
+    }
+
+    public static void quicksort (int[] array) {
+        Sort.quicksort(array, 0, array.length - 1);
+    }
 
 }
