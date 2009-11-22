@@ -1,15 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package sorts;
-
-import java.util.Random;
 
 /**
  *
- * @author mtrac002
+ * @author Michael Tracy
  */
 public final class Sort {
 
@@ -102,6 +95,56 @@ public final class Sort {
 
     public static void quicksort (int[] array) {
         Sort.quicksort(array, 0, array.length - 1);
+    }
+
+
+
+
+    private static int leftChild(int parent) {
+        return 2 * parent + 1; // the + 1 is there because arrays are indexed off of 0, not 1
+    }
+
+    private static void percDown(int[] array, int itemPos, int length) {
+        int item;
+        int childPos;
+        
+        for (item = array[itemPos]; leftChild(itemPos) < length; itemPos = childPos) {
+
+            childPos = leftChild(itemPos);
+
+            // Find the lesser of the two children
+            if (childPos != length - 1 && array[childPos + 1] < array[childPos])
+                childPos++;
+            if(item > array[childPos]) {
+                array[itemPos] = array[childPos];
+            } else break;
+        }
+        array[itemPos] = item;
+    }
+
+    private static void buildHeap (int[] array) {
+        for (int i = array.length / 2; i >=0; i--) {
+            percDown(array, i, array.length);
+        }
+    }
+
+    private static int deletemin (int[] array, int length) {
+        int min = array[0];
+        array[0] = array[--length];
+        percDown(array, 0, length);
+        return min;
+    }
+
+    public static void heapsort (int[] array) {
+        buildHeap(array);
+        System.out.println("Heap:");
+        for (int i : array) {
+            System.out.print(i + ", ");
+        }
+        System.out.println();
+        for (int i = array.length; i > 0; i--) {
+            deletemin(array, i);
+        }
     }
 
 }
