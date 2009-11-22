@@ -30,7 +30,7 @@ public final class Sort {
             System.out.print(i + ", ");
         }
         System.out.println();
-        //int length = (start + end) / 2;
+        int length = end - start + 1;
         int leftPos = start;
         int rightPos = middle + 1;
         int next = start;
@@ -47,6 +47,9 @@ public final class Sort {
         while (leftPos <= middle) {
             temp[next++] = array[leftPos++];
         }
+
+        for (int i = 0; i < length; i++, end--)
+            array[end] = temp[end];
     }
 
     private static void mergesort (int[] array, int[] temp, int start, int end) {
