@@ -115,6 +115,8 @@ public final class Sort {
             // Find the lesser of the two children
             if (childPos != length - 1 && array[childPos + 1] < array[childPos])
                 childPos++;
+
+            // If the current item is greater than the least of the children
             if(item > array[childPos]) {
                 array[itemPos] = array[childPos];
             } else break;
@@ -130,19 +132,15 @@ public final class Sort {
 
     private static int deletemin (int[] array, int length) {
         int min = array[0];
-        array[0] = array[--length];
+        length--;
+        swap(array, 0, length);
         percDown(array, 0, length);
         return min;
     }
 
     public static void heapsort (int[] array) {
         buildHeap(array);
-        System.out.println("Heap:");
-        for (int i : array) {
-            System.out.print(i + ", ");
-        }
-        System.out.println();
-        for (int i = array.length; i > 0; i--) {
+        for( int i = array.length; i > 0; i-- ) {
             deletemin(array, i);
         }
     }
