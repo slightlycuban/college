@@ -130,6 +130,28 @@ int main(int argc, char *argv[]) {
 
 			printf("Server got STOR command\n");
 			char * f_name = recv_mesg(client);
+			printf("Opening %s\n", f_name);
+			int out;
+			if ((out = open(f_name, O_WRONLY | O_CREAT | O_EXCL, 0644)) < 0) {
+				perror("server cannot open file");
+				send_mesg(client, "-1", sizeof(short));
+				continue;
+			}
+			send_mesg(client, "0", sizeof(short));
+			char * size_buff = recv_mesg(client);
+			int f_size = atoi(size_buff);
+			free(size_buff);
+			char *buff = malloc(sizeof(char) * 512);
+			int bytes_recv = 0;
+			while (bytes_recv < f_size) {
+				memset(buff, '\0', 512);
+				bytes_recv += recv(client, buff, 512, 0);
+				printf("got %d bytes\n", bytes_recv);
+				write(out, buff, strlen(buff));
+			}
+			printf("Done recieving file\n");
+
+			close(out);
 
 		}
 		else if ( (command[0] == 'C') || (command[0] == 'c')) {

@@ -82,13 +82,43 @@ int main(int argc, char *argv[]) {
 		else if ( (command[0] == 'S') || (command[0] == 's')) {
 
 			
-			int in, out;
+			int in;
 			if ((in = open(arg, O_RDONLY)) < 0) {
 				perror("client cannot open file");
 				continue;
 			}
 
-			send_msg(sockdes, arg, strlen(arg));
+			send_mesg(sockdes, arg, strlen(arg));
+			char * status= recv_mesg(sockdes);
+			if (status[0] != '0') {
+				perror("server couldn't do that thing with the file");
+				continue;
+			}
+			printf("Server opened file.\n");
+			free(status);
+
+			struct stat fileinfo;
+			fstat(in, &fileinfo);
+			// printf("filesize: %8d\n", fileinfo.st_size);
+			int f_size = fileinfo.st_size;
+			char size_buff[10];
+			sprintf(size_buff, "%d", f_size);
+			send_mesg(sockdes, size_buff, 10);
+			char buff[512];
+			int bytes;
+			while ((bytes = read(in, buff, 512)) > 0) {
+				// do error checking
+				printf("Trying to send %d bytes\n", bytes);
+				send(sockdes, buff, bytes, 0);
+				memset(buff, '\0', 512);
+			}
+			/*
+			int i;
+			for (i = 0; i < f_size; i++) {
+				char temp = fgetc(in);
+				send(sockdes, temp, sizeof(char), 0);
+			}
+			*/
 
 		}
 		else if ( (command[0] == 'C') || (command[0] == 'c')) {

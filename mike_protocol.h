@@ -78,5 +78,6 @@ char * recv_mesg(int server) {
 	bytes_recv = 0;
 	while ( bytes_recv < hmesg_len )
 		bytes_recv += recv(server, buffer, hmesg_len, 0);
+	buffer[hmesg_len] = '\0';
 	return buffer;
 }
