@@ -67,16 +67,21 @@ int main(int argc, char *argv[]) {
 
 			printf("Sending path: %s\n",arg);
 			send_mesg(sockdes, arg, strlen(arg)); 
-			printf("sent path\n");
 			char * response = recv_mesg(sockdes);
-			printf("result length: %d\n", strlen(response));
 			puts(response);
 			free(response);
 
 		}
-		else if ((strcmp(command, "RETR") == 0) || (strcmp(command,"retr") == 0 )) {
+		else if ( (command[0] == 'R') || (command[0] == 'r')) {
 
-			printf("to be implemented\n");
+			printf("Searching for %s\n",arg);
+			send_mesg(sockdes, arg, strlen(arg)); 
+			/*
+			char * response = recv_mesg(sockdes);
+			printf("result length: %d\n", strlen(response));
+			puts(response);
+			free(response);
+			*/
 
 		}
 		else if ( (command[0] == 'S') || (command[0] == 's')) {

@@ -121,9 +121,18 @@ int main(int argc, char *argv[]) {
 			free(result);
 
 		}
-		else if ((strcmp(command, "RETR") == 0) || (strcmp(command,"retr") == 0 )) {
+		else if ( (command[0] == 'R') || (command[0] == 'r')) {
 
-			printf("to be implemented\n");
+
+			printf("Server got RETR command\n");
+			char * f_name = recv_mesg(client);
+			flist * seed = malloc(sizeof(flist));
+			flist * results = fsearch(f_name, ".", seed);
+			flist * p;
+			for (p = results; p != NULL; p = p->next) {
+				printf("%s/%s\n", p->path, f_name);
+			}
+
 
 		}
 		else if ( (command[0] == 'S') || (command[0] == 's')) {
