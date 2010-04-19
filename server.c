@@ -113,36 +113,12 @@ int main(int argc, char *argv[]) {
 
 			printf("Server received LIST command.\n");
 			char * path = recv_mesg(client);
-			/*
 			printf("Path: %s\n", path);
-			bytes_recv = 0;
-			len = sizeof(short);
-			short nmesg_len;
-			while ( bytes_recv < len )
-				bytes_recv += recv(client, &nmesg_len, len, 0);
-			short hmesg_len = ntohs(nmesg_len);
-
-			char path[hmsg_len + 1];
-			bytes_recv = 0;
-			while ( bytes_recv < hmsg_len )
-				bytes_recv += recv( client, path, hmsg_len, 0 );
-			path[hmesg_len] = '\0';
-
-			char * pbuffer = list (path, 4096);
-			hmesg_len = strlen(pbuffer);
-			nmesg_len = htons(hmesg_len);
-
-			send_mesg(client, pbuffer, 4096);
-			/*
-			bytes_sent = 0;
-			len = sizeof(short);
-			while ( bytes_sent < len )
-				bytes_sent += send(client, &nmesg_len, len, 0);
-			bytes_sent = 0;
-			while (bytes_sent < hmesg_len)
-				bytes_sent += send(client, pbuffer, hmesg_len, 0);
-				*/
-			free(pbuffer);
+			char * result = list(path, 4096);
+			puts(result);
+			send_mesg(client, result, strlen(result));
+			free(path);
+			free(result);
 
 		}
 		else if ((strcmp(command, "RETR") == 0) || (strcmp(command,"retr") == 0 )) {
@@ -150,14 +126,26 @@ int main(int argc, char *argv[]) {
 			printf("to be implemented\n");
 
 		}
-		else if ((strcmp(command, "STOR") == 0) || (strcmp(command,"stor") == 0 )) {
+		else if ( (command[0] == 'S') || (command[0] == 's')) {
 
-			printf("to be implemented\n");
+			printf("Server got STOR command\n");
+			char * f_name = recv_mesg(client);
 
 		}
-		else if ((strcmp(command, "CD") == 0) || (strcmp(command,"cd") == 0 )) {
+		else if ( (command[0] == 'C') || (command[0] == 'c')) {
 
-			printf("to be implemented\n");
+			printf("Server received CD command.\n");
+			char * path = recv_mesg(client);
+			printf("Path: %s\n", path);
+			if (chdir(path) != 0) {
+				char *error = "Path not changed.\n";
+				perror(error);
+				send_mesg(client, error, strlen(error));
+			} else {
+				char *success ="Path changed.\n";
+				send_mesg(client, success, strlen(success));
+			}
+			free(path);
 
 		}
 		else {
