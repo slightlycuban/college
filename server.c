@@ -126,13 +126,36 @@ int main(int argc, char *argv[]) {
 
 			printf("Server got RETR command\n");
 			char * f_name = recv_mesg(client);
-			flist * seed = malloc(sizeof(flist));
-			flist * results = fsearch(f_name, ".", seed);
-			flist * p;
-			for (p = results; p != NULL; p = p->next) {
-				printf("%s/%s\n", p->path, f_name);
-			}
 
+			int in;
+			if ((in = open(f_name, O_RDONLY)) < 0) {
+				perror("server cannot open file");
+				send_mesg(client, "-1", 2);
+				continue;
+			}
+			send_mesg(client, "0", 1);
+			printf("Server opened file.\n");
+			char * status= recv_mesg(client);
+			if (status[0] != '0') {
+				perror("client couldn't do that thing with the file");
+				continue;
+			}
+			printf("Client opened file.\n");
+			struct stat fileinfo;
+			fstat(in, &fileinfo);
+			int f_size = fileinfo.st_size;
+			char * size_buff = malloc(sizeof(char) * 10);
+			sprintf(size_buff, "%d", f_size);
+			send_mesg(client, size_buff, 10);
+			char * buff = malloc(sizeof(char) * 512);
+			int bytes;
+			while ((bytes = read(in, buff, 512)) > 0) {
+				printf("Trying to send %d bytes\n", bytes);
+				send(client, buff, bytes, 0);
+				memset(buff, '\0', 512);
+			}
+			free(size_buff);
+			free(buff);
 
 		}
 		else if ( (command[0] == 'S') || (command[0] == 's')) {
@@ -143,10 +166,10 @@ int main(int argc, char *argv[]) {
 			int out;
 			if ((out = open(f_name, O_WRONLY | O_CREAT | O_EXCL, 0644)) < 0) {
 				perror("server cannot open file");
-				send_mesg(client, "-1", sizeof(short));
+				send_mesg(client, "-1", 2);
 				continue;
 			}
-			send_mesg(client, "0", sizeof(short));
+			send_mesg(client, "0", 1);
 			char * size_buff = recv_mesg(client);
 			int f_size = atoi(size_buff);
 			free(size_buff);
@@ -160,6 +183,7 @@ int main(int argc, char *argv[]) {
 			}
 			printf("Done recieving file\n");
 
+			free(buff);
 			close(out);
 
 		}

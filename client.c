@@ -76,12 +76,36 @@ int main(int argc, char *argv[]) {
 
 			printf("Searching for %s\n",arg);
 			send_mesg(sockdes, arg, strlen(arg)); 
-			/*
-			char * response = recv_mesg(sockdes);
-			printf("result length: %d\n", strlen(response));
-			puts(response);
-			free(response);
-			*/
+			char * status= recv_mesg(sockdes);
+			if (status[0] != '0') {
+				perror("server couldn't do that thing with the file");
+				continue;
+			}
+			printf("Server opened file.\n");
+			free(status);
+
+			int out;
+			if ((out = open(arg, O_WRONLY | O_CREAT | O_EXCL, 0644)) < 0) {
+				perror("client cannot open file");
+				send_mesg(sockdes, "-1",2);
+				continue;
+			}
+			send_mesg(sockdes, "0", 1);
+			char * size_buff = recv_mesg(sockdes);
+			int f_size = atoi(size_buff);
+			free(size_buff);
+			char *buff = malloc(sizeof(char) * 512);
+			int bytes_recv = 0;
+			while (bytes_recv < f_size) {
+				memset(buff, '\0', 512);
+				bytes_recv += recv(sockdes, buff, 512, 0);
+				printf("got %d bytes\n", bytes_recv);
+				write(out, buff, strlen(buff));
+			}
+			printf("Done recieving file\n");
+
+			free(buff);
+			close(out);
 
 		}
 		else if ( (command[0] == 'S') || (command[0] == 's')) {
@@ -104,7 +128,6 @@ int main(int argc, char *argv[]) {
 
 			struct stat fileinfo;
 			fstat(in, &fileinfo);
-			// printf("filesize: %8d\n", fileinfo.st_size);
 			int f_size = fileinfo.st_size;
 			char size_buff[10];
 			sprintf(size_buff, "%d", f_size);
@@ -112,18 +135,10 @@ int main(int argc, char *argv[]) {
 			char buff[512];
 			int bytes;
 			while ((bytes = read(in, buff, 512)) > 0) {
-				// do error checking
 				printf("Trying to send %d bytes\n", bytes);
 				send(sockdes, buff, bytes, 0);
 				memset(buff, '\0', 512);
 			}
-			/*
-			int i;
-			for (i = 0; i < f_size; i++) {
-				char temp = fgetc(in);
-				send(sockdes, temp, sizeof(char), 0);
-			}
-			*/
 
 		}
 		else if ( (command[0] == 'C') || (command[0] == 'c')) {

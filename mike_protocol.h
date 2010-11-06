@@ -14,65 +14,6 @@
 #define PORT "41910"
 #define MAX_BACKLOG 5
 
-typedef struct filelist {
-	struct filelist * next;
-	char * path;
-} flist;
-
-flist * create_list(char * path) {
-	flist * newnode = malloc(sizeof(flist));
-	newnode->path = path;
-	newnode->next = NULL;
-}
-
-flist * add_path(flist * files, char * path) {
-	flist * head = files;
-	if (head == NULL) {
-		create_list(path);
-		return head;
-	}
-
-	while (files->next != NULL)
-		files = files->next;
-	files->next = create_list(path);
-
-	return head;
-}
-
-
-
-flist * fsearch (char fname[], char path[], flist* current) {
-	DIR *dp;
-	struct dirent *dirp;
-	struct stat ibuffer;
-
-	if ((dp = opendir(path)) == NULL) {
-		perror("cannot open directory");
-		return current;
-	}
-	while ((dirp = readdir(dp)) != NULL) {
-		if (dirp->d_name[0] == '.')	/* Ignore hidden/dot files */
-			continue;
-
-		if (stat(dirp->d_name, &ibuffer) < 0) /* Some stat error */
-			exit(4);
-
-		if (S_ISDIR(ibuffer.st_mode) == 0) {
-			fsearch(fname, strcat(path,dirp->d_name), current);
-		}
-		else {
-			if (strcmp(dirp->d_name, fname)==0) {
-				char * temp = malloc(sizeof(dirp->d_name) + sizeof(path) + 1);
-				strcpy(temp, path);
-				strcat(temp, "/");
-				strcat(temp, dirp->d_name);
-				current = add_path(current, temp);
-			} else continue;
-		}
-	}
-}	
-
-
 char * list ( char * path, int buffsize ) {
 
     struct stat	    buffer;
