@@ -4,6 +4,25 @@ import math
 def num( ):
 	return math.ceil(math.log10(1/.000001)/math.log10(2))
 
+def isNewtonDone( plast, pnow ):
+	result = math.fabs(pnow - plast)/math.fabs(pnow)
+	
+	if result < .000001:
+		return True
+	else:
+		return False
+def newton():
+	p = 2
+	cond = False
+	while not cond:
+		pNew = p - (computeFunction( p ) / computeDerivative( p ))
+		cond = isNewtonDone( p , pNew)
+		
+		if cond == True:
+			return pNew
+		else:
+			p = pNew 	
+			
 #function equals f(x) = x^4 -3x-3
 def computeFunction( input ):
 	return (math.pow(input, 4) - (3 * math.pow(input,2)) - 3)
@@ -34,3 +53,4 @@ def computeDerivative( input ):
 if __name__ == "__main__":
 	print  bisection( 1, 2)
 	print computeDerivative(1)
+	print newton()
