@@ -27,6 +27,15 @@ def newton():
 def computeFunction( input ):
 	return (math.pow(input, 4) - (3 * math.pow(input,2)) - 3)
 
+def fixedPoint():
+	num = 15
+	result = 2
+	
+	for i in range(0,num):
+		result =  math.pow(((3 * math.pow(result,2)) + 3), .25)
+
+	return result
+
 def bisection( a, b ):
 	counter = math.trunc(num())
 	p = .5 * ( a + b)
@@ -52,5 +61,5 @@ def computeDerivative( input ):
 	return (4 * math.pow(input, 3) - 6 * input)					
 if __name__ == "__main__":
 	print  bisection( 1, 2)
-	print computeDerivative(1)
 	print newton()
+	print fixedPoint()
