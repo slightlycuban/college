@@ -83,6 +83,12 @@ def bisection( a, b ):
 #the derivative equals 4x^3 - 6x
 def computeDerivative( input ):
 	return (4 * math.pow(input, 3) - 6 * input)					
+#get the error
+def errorOne( pNot, pOne ):
+	return (math.fabs(pOne - pNot))/math.fabs(pOne)
+def errorTwo( pNot, pOne ):
+	return math.fabs(pOne - pNot)
+
 if __name__ == "__main__":
 	print  bisection( 1, 2)
 	print newton()
