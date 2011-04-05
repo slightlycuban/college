@@ -8,3 +8,9 @@ num.py--how it works:
 	They all return a tuple:
 		The first element is the result of the iteration
 		The second element is a triple of lists containing the errors during each iteration. There are 3 error functions, so there are 3 lists of errors.
+
+graph.py--how it works:
+	This uses the matplotlib to create the pretty graphs. It contains a function, plotErrors, that will generate a PNG of the graph of the different error functions.
+	plotErrors takes 4 parameters:
+		The 3 list of errors from the 3 error functions
+		The "label" of the graph (newton, secant, etc). This will be used to label the graph and the filename

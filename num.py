@@ -1,5 +1,7 @@
 import math
 
+import graph as plotter
+
 # Error list creation function. Add error from p0 & p1 to errList.
 # errList is two-dimensional: it has 3 lists for the 3 errors
 def listErrors( p1, p0, errList ):
@@ -125,7 +127,22 @@ def computeDerivative( input ):
 	return (4 * math.pow(input, 3) - 6 * input)					
 
 if __name__ == "__main__":
-	print  bisection( 1, 2)
-	print newton()
-	print fixedPoint()
-	print secant( 1, 2, .000001, 10)
+	print "Bisection result"
+	result = bisection( 1, 2 )
+	print result[0]
+	plotter.plotErrors( result[1][0], result[1][1],  result[1][2], "bisection" )
+
+	print "Newton result"
+	result = newton()
+	print result[0]
+	plotter.plotErrors( result[1][0], result[1][1],  result[1][2], "Newton" )
+
+	print "Fixed-point result"
+	result = fixedPoint()
+	print result[0]
+	plotter.plotErrors( result[1][0], result[1][1],  result[1][2], "fixedPoint" )
+
+	print "Secant result"
+	result = secant( 1, 2, .000001, 10)
+	print result[0]
+	plotter.plotErrors( result[1][0], result[1][1],  result[1][2], "secant" )
