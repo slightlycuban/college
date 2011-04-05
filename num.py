@@ -87,3 +87,4 @@ if __name__ == "__main__":
 	print  bisection( 1, 2)
 	print newton()
 	print fixedPoint()
+	print secant( 1, 2, .000001, 10)
