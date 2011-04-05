@@ -1,5 +1,17 @@
 import math
 
+# Error function #1, returns (p1 - p0)/(p1)
+def error1( p1, p0 ):
+	return math.fabs( p1 - p0 ) / p1
+
+# Error function #2, returns p1 - p0
+def error2( p1, p0 ):
+	return math.fabs( p1 - p0 )
+
+# Error function #3, returns computeFunction( p ). This should approach 0.
+def error3( p ):
+	return math.fabs(computeFunction(p))
+
 #compute the number of iterations need for bisection
 def num( ):
 	return math.ceil(math.log10(1/.000001)/math.log10(2))
