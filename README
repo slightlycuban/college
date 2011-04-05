@@ -1,0 +1,10 @@
+NUMERICAL ANALYSIS PROJECT 1
+Calculate f(x) = 0 using several methods
+
+...in Python
+
+num.py--how it works:
+	This contains several functions. The most important are newtons, secant, fixedpoint, and bisection. These calculate the answer (within a tolerance), and the error these functions have as they iterate.
+	They all return a tuple:
+		The first element is the result of the iteration
+		The second element is a triple of lists containing the errors during each iteration. There are 3 error functions, so there are 3 lists of errors.

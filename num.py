@@ -29,9 +29,11 @@ def error3( p ):
 def num( ):
 	return math.ceil(math.log10(1/.000001)/math.log10(2))
 
-# Return the point around p1, p0, within tol and n iterations
+# Calculates the point f(x) = 0 using secant method
+# Return a list of the answer and lists of our errors as we get close to the answer
 def secant( p0, p1, tol, n ):
-	rvalue = 0
+	p = 0
+	errList = [[],[],[]]
 
 	q0 = computeFunction( p0 )
 	q1 = computeFunction( p1 )
@@ -39,16 +41,19 @@ def secant( p0, p1, tol, n ):
 	for i in range(2, n + 1):
 
 		# Here we calculate the secant
-		rvalue = p1 - (q1 * ((p1 - p0) / (q1 - q0)))
+		p = p1 - (q1 * ((p1 - p0) / (q1 - q0)))
+
+		# Update our error list
+		listErrors( p, p1, errList )
 
 		# Check to see if we're within our tolerance
-		if math.fabs(rvalue - p1) < tol:
-			return rvalue
+		if math.fabs(p - p1) < tol:
+			return [p, errList]
 
 		p0 = p1
 		q0 = q1
-		p1 = rvalue
-		q1 = computeFunction( rvalue )
+		p1 = p
+		q1 = computeFunction( p )
 
 	return False
 	#raise NameError('Completed ' + n + ' iterations, but ' + rvalue + ' is outside our tolerance.')
@@ -62,13 +67,16 @@ def isNewtonDone( plast, pnow ):
 		return False
 def newton():
 	p = 2
+	errList = [[],[],[]]
 	cond = False
 	while not cond:
 		pNew = p - (computeFunction( p ) / computeDerivative( p ))
 		cond = isNewtonDone( p , pNew)
+
+		listErrors( pNew, p, errList )
 		
 		if cond == True:
-			return pNew
+			return [pNew, errList]
 		else:
 			p = pNew 	
 			
@@ -79,17 +87,22 @@ def computeFunction( input ):
 def fixedPoint():
 	num = 15
 	result = 2
+	errList = [[],[],[]]
 	
 	for i in range(0,num):
-		result =  math.pow(((3 * math.pow(result,2)) + 3), .25)
+		temp =  math.pow(((3 * math.pow(result,2)) + 3), .25)
+		listErrors( temp, result, errList )
+		result = temp
 
-	return result
+	return [result, errList]
 
 def bisection( a, b ):
 	counter = math.trunc(num())
 	p = .5 * ( a + b)
 	tempa = 0
 	tempp = 0
+
+	errList = [[],[],[]]
 
 	for i in range(0,counter):
 		#magic happens here
@@ -100,19 +113,16 @@ def bisection( a, b ):
 			#is this by value?
 			b = p
 			p = .5 * (a + b)
+			listErrors( p, b, errList )
 		else:
 			a = p
 			p = .5 * (a + b)
-	return p
+			listErrors( p, a, errList )
+	return [p, errList]
 
 #the derivative equals 4x^3 - 6x
 def computeDerivative( input ):
 	return (4 * math.pow(input, 3) - 6 * input)					
-#get the error
-def errorOne( pNot, pOne ):
-	return (math.fabs(pOne - pNot))/math.fabs(pOne)
-def errorTwo( pNot, pOne ):
-	return math.fabs(pOne - pNot)
 
 if __name__ == "__main__":
 	print  bisection( 1, 2)
