@@ -15,5 +15,6 @@ def plotErrors( error1, error2, error3, title ):
 	plt.legend(loc="upper right")
 
 	plt.savefig(title + ".png")
+	plt.close()
 
 	return
