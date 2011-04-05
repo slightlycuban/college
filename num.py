@@ -4,6 +4,30 @@ import math
 def num( ):
 	return math.ceil(math.log10(1/.000001)/math.log10(2))
 
+# Return the point around p1, p0, within tol and n iterations
+def secant( p0, p1, tol, n ):
+	rvalue = 0
+
+	q0 = computeFunction( p0 )
+	q1 = computeFunction( p1 )
+
+	for i in range(2, n + 1):
+
+		# Here we calculate the secant
+		rvalue = p1 - (q1 * ((p1 - p0) / (q1 - q0)))
+
+		# Check to see if we're within our tolerance
+		if math.fabs(rvalue - p1) < tol:
+			return rvalue
+
+		p0 = p1
+		q0 = q1
+		p1 = rvalue
+		q1 = computeFunction( rvalue )
+
+	return False
+	#raise NameError('Completed ' + n + ' iterations, but ' + rvalue + ' is outside our tolerance.')
+
 def isNewtonDone( plast, pnow ):
 	result = math.fabs(pnow - plast)/math.fabs(pnow)
 	
