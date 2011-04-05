@@ -1,5 +1,18 @@
 import math
 
+# Error list creation function. Add error from p0 & p1 to errList.
+# errList is two-dimensional: it has 3 lists for the 3 errors
+def listErrors( p1, p0, errList ):
+	# Create our list if we're starting out
+	if ( errList is None ):
+		errList = [[],[],[]]
+	
+	errList[0].append( error1(p1,p0) )
+	errList[1].append( error2(p1,p0) )
+	errList[2].append( error3(p1) )
+	
+	return errList
+
 # Error function #1, returns (p1 - p0)/(p1)
 def error1( p1, p0 ):
 	return math.fabs( p1 - p0 ) / p1
