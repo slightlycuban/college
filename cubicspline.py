@@ -27,7 +27,6 @@ def buildGraph(a,b,c,d,xi):
 	for i in range(len(xi)-1):
 		interval = (xi[i+1]-xi[i])/subinterval
 		x = xi[i]
-		print i, xi[i]
 
 		for j in range(subinterval):
 			plot[0].append(x)
@@ -89,6 +88,7 @@ def naturalCubicSpline(n,a=[],x=[],label=""):
 		b[j] = (((a[j+1] - a[j])/h[j]) - (h[j]*(c[j+1] + 2*c[j]))/3 )
 		d[j] = ((c[j+1] - c[j])/(3*h[j]))
 
+	printData(i,n,x,a,b,c,d,"Natural")
 	return [n,a,b,c,d,x]
 
 def clampedCubicSpline(n,a=[],x=[],label="",FPO=0.0,FPN=0.0):
@@ -136,6 +136,7 @@ def clampedCubicSpline(n,a=[],x=[],label="",FPO=0.0,FPN=0.0):
 		b[j] = ((a[j+1] - a[j])/h[j]) - (h[j]*(c[j+1] + 2*c[j])/3)
 		d[j] = (c[j+1] - c[j])/(3*h[j])
 
+	printData(i,n,x,a,b,c,d,"Clamped")
 	return [n,a,b,c,d,x]
 
 def printData(i,n,x,a,b,c,d,label):
