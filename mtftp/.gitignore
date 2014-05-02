@@ -1,0 +1,4 @@
+out/*
+apue.h
+*.o
+mtftp*
